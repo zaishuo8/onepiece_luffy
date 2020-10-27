@@ -1,0 +1,64 @@
+apply plugin: 'com.android.application'
+
+// flutter module
+repositories {
+    maven {
+        url '/Users/xuting/XNG-FLUTTER/onepiece_zoro/build/host/outputs/repo'
+    }
+    maven {
+        url 'https://storage.googleapis.com/download.flutter.io'
+    }
+}
+
+android {
+    signingConfigs {
+        defaultConfig {
+            storeFile file('/Users/xuting/XNG-FLUTTER/onepiece_luffy/jks/luffy.keystore')
+            storePassword 'luffy@123'
+            keyAlias 'luffy'
+            keyPassword 'luffy@123'
+        }
+    }
+    compileSdkVersion 29
+
+    defaultConfig {
+        applicationId "com.xuting.onepiece_luffy"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        applicationIdSuffix 'com.xuting.onepiece_luffy'
+        signingConfig signingConfigs.defaultConfig
+    }
+
+    buildTypes {
+        profile {
+            initWith debug
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    // flutter module
+    debugImplementation 'com.xuting.onepiece_zoro:flutter_debug:1.7'
+    profileImplementation 'com.xuting.onepiece_zoro:flutter_profile:1.7'
+    releaseImplementation 'com.xuting.onepiece_zoro:flutter_release:1.7'
+}
