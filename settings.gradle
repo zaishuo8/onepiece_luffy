@@ -1,2 +1,9 @@
 include ':app'
 rootProject.name = "onepiece_luffy"
+setBinding(new Binding([gradle: this]))                                // new
+evaluate(new File(                                                     // new
+        settingsDir.parentFile,                                              // new
+        'onepiece_zoro/.android/include_flutter.groovy'                         // new
+))
+include ':onepiece_zoro'
+project(':onepiece_zoro').projectDir = new File('../onepiece_zoro')

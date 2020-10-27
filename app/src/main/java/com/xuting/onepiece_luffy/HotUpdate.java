@@ -60,7 +60,8 @@ class HotUpdate {
 
                             boolean res = destFile.createNewFile();
                             if (res) {
-                                String newLibappSoUrl = "https://zaishuo8.github.io/ssq/libapp.so";
+                                String newLibappSoUrl = "http://zaishuo8.github.io/ssq/libapp.so";
+                                // String newLibappSoUrl = "https://zaishuo8.github.io/ssq/libapp.so";
                                 URL url = new URL(newLibappSoUrl);
                                 URLConnection connection = url.openConnection();
                                 connection.connect();

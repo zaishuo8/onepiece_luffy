@@ -101,6 +101,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+        // 打开 flutter 错误捕获页面
+        findViewById(R.id.open_flutter_catch_error).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String url = "flutter://error_catch_page";
+                Intent intent = BoostFlutterActivity.withNewEngine().url(url).params(new HashMap<>())
+                        .backgroundMode(BoostFlutterActivity.BackgroundMode.opaque)
+                        .build(MainActivity.this);
+                MainActivity.this.startActivityForResult(intent, 0);
+            }
+        });
+
+        // 打开 flutter 帧率监测页面
+        findViewById(R.id.open_flutter_fps_watch).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String url = "flutter://fsp_watch_page";
+                Intent intent = BoostFlutterActivity.withNewEngine().url(url).params(new HashMap<>())
+                        .backgroundMode(BoostFlutterActivity.BackgroundMode.opaque)
+                        .build(MainActivity.this);
+                MainActivity.this.startActivityForResult(intent, 0);
+            }
+        });
+
         /*WebView wb = findViewById(R.id.vr_webView_in_main);
         WebSettings s = wb.getSettings();
         s.setBuiltInZoomControls(true);
