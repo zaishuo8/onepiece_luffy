@@ -15,6 +15,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.text.DecimalFormat;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 class HotUpdate {
 
@@ -57,12 +65,13 @@ class HotUpdate {
                         if (!destFile.exists()){
                             HotUpdate.downloadDone = false;
                             HotUpdate.downSuccess = false;
+                            MainActivity.instance.changeDownloadProgress("开始下载...");
 
                             boolean res = destFile.createNewFile();
                             if (res) {
-                                String newLibappSoUrl = "http://zaishuo8.github.io/ssq/libapp_1.so";
-                                // String newLibappSoUrl = "https://zaishuo8.github.io/ssq/libapp_1.so";
+                                String newLibappSoUrl = "https://zaishuo8.github.io/ssq/libapp_2.so";
                                 URL url = new URL(newLibappSoUrl);
+                                trustAllHosts();
                                 URLConnection connection = url.openConnection();
                                 connection.connect();
                                 InputStream inputStream = connection.getInputStream();
@@ -76,7 +85,7 @@ class HotUpdate {
 
                                 FileOutputStream fileOutputStream = new FileOutputStream(destFile);
                                 byte[] buffer = new byte[1024];
-                                int downLoadFileSize = 0;
+                                double downLoadFileSize = 0;
                                 do{
                                     //循环读取
                                     int numread = inputStream.read(buffer);
@@ -86,7 +95,12 @@ class HotUpdate {
                                     }
                                     fileOutputStream.write(buffer, 0, numread);
                                     downLoadFileSize += numread;
-                                    //更新进度条
+                                    // 更新进度条
+                                    double progress = downLoadFileSize / fileSize * 100;
+                                    DecimalFormat df = new DecimalFormat("#.00");
+                                    String str = df.format(progress);
+                                    String progressStr = str + "%";
+                                    MainActivity.instance.changeDownloadProgress(progressStr);
                                 } while (true);
 
                                 inputStream.close();
@@ -107,6 +121,39 @@ class HotUpdate {
                 }
             }
         ).start();
+    }
+
+    /**
+     * Trust every server - dont check for any certificate
+     */
+    private static void trustAllHosts() {
+        final String TAG = "trustAllHosts";
+        // Create a trust manager that does not validate certificate chains
+        TrustManager[] trustAllCerts = new TrustManager[] {
+                new X509TrustManager() {
+                    public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                        return new java.security.cert.X509Certificate[] {};
+                    }
+
+                    public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+                        Log.i(TAG, "checkClientTrusted");
+                    }
+
+                    public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+                        Log.i(TAG, "checkServerTrusted");
+                    }
+                }
+
+        };
+
+        // Install the all-trusting trust manager
+        try {
+            SSLContext sc = SSLContext.getInstance("TLS");
+            sc.init(null, trustAllCerts, new java.security.SecureRandom());
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     class CheckDto {

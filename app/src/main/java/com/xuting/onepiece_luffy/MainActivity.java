@@ -21,11 +21,24 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    public static MainActivity instance = null;
+
     public static WeakReference<MainActivity> sRef;
 
     private TextView mOpenNative;
     private TextView mOpenFlutter;
     private TextView mOpenFlutterFragment;
+
+    private TextView downloadProgress;
+
+    public void changeDownloadProgress(String progress) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                downloadProgress.setText(progress);
+            }
+        });
+    }
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -35,6 +48,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         sRef = new WeakReference<>(this);
 
         setContentView(R.layout.native_page);
+
+        instance = this;
+        downloadProgress = findViewById(R.id.download_progress);
 
         /*mOpenNative = findViewById(R.id.open_native);
         mOpenFlutter = findViewById(R.id.open_flutter);
