@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 // flutter module
 repositories {
     maven {
-        url '/Users/xuting/XNG-FLUTTER/onepiece_zoro/build/host/outputs/repo'
+        url '../../onepiece_zoro/build/host/outputs/repo'
     }
     maven {
         url 'https://storage.googleapis.com/download.flutter.io'
@@ -13,7 +13,7 @@ repositories {
 android {
     signingConfigs {
         defaultConfig {
-            storeFile file('/Users/xuting/XNG-FLUTTER/onepiece_luffy/jks/luffy.keystore')
+            storeFile file('../jks/luffy.keystore')
             storePassword 'luffy@123'
             keyAlias 'luffy'
             keyPassword 'luffy@123'
