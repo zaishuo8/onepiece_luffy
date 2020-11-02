@@ -50,76 +50,69 @@ class HotUpdate {
     }
 
     static void check(String newLibappSoUrl) {
-        new Thread(
-            new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        File destFile = new File(libappSoPath);
-                        boolean fileExists = destFile.exists();
-                        if (fileExists) {
-                            // todo 不能直接删除，改个文件名 libapp_backup.so 用来下载更新失败回滚用
-                            destFile.delete();
-                        }
+        try {
+            File destFile = new File(libappSoPath);
+            boolean fileExists = destFile.exists();
+            if (fileExists) {
+                // todo 不能直接删除，改个文件名 libapp_backup.so 用来下载更新失败回滚用
+                destFile.delete();
+            }
 
-                        if (!destFile.exists()){
-                            HotUpdate.downloadDone = false;
-                            HotUpdate.downSuccess = false;
-                            MainActivity.instance.changeDownloadProgress("开始下载...");
+            if (!destFile.exists()){
+                HotUpdate.downloadDone = false;
+                HotUpdate.downSuccess = false;
+                MainActivity.instance.changeDownloadProgress("开始下载...");
 
-                            boolean res = destFile.createNewFile();
-                            if (res) {
-                                URL url = new URL(newLibappSoUrl);
-                                trustAllHosts();
-                                URLConnection connection = url.openConnection();
-                                connection.connect();
-                                InputStream inputStream = connection.getInputStream();
-                                int fileSize = connection.getContentLength();
-                                if (fileSize <= 0) {
-                                    throw new RuntimeException("无法获知文件大小");
-                                }
-                                if (inputStream == null) {
-                                    throw new  RuntimeException("stream is null");
-                                }
-
-                                FileOutputStream fileOutputStream = new FileOutputStream(destFile);
-                                byte[] buffer = new byte[1024];
-                                double downLoadFileSize = 0;
-                                do{
-                                    //循环读取
-                                    int numread = inputStream.read(buffer);
-                                    if (numread == -1)
-                                    {
-                                        break;
-                                    }
-                                    fileOutputStream.write(buffer, 0, numread);
-                                    downLoadFileSize += numread;
-                                    // 更新进度条
-                                    double progress = downLoadFileSize / fileSize * 100;
-                                    DecimalFormat df = new DecimalFormat("#.00");
-                                    String str = df.format(progress);
-                                    String progressStr = str + "%";
-                                    MainActivity.instance.changeDownloadProgress(progressStr);
-                                } while (true);
-
-                                inputStream.close();
-                                fileOutputStream.close();
-
-                                HotUpdate.downloadDone = true;
-                                HotUpdate.downSuccess = true;
-
-                                Log.d("--- HotUpdate ---", "下载成功");
-                            }
-                        }
-                    } catch (IOException e){
-                        HotUpdate.downloadDone = true;
-                        HotUpdate.downSuccess = false;
-                        e.printStackTrace();
-                        Log.d("--- HotUpdate ---", "下载失败");
+                boolean res = destFile.createNewFile();
+                if (res) {
+                    URL url = new URL(newLibappSoUrl);
+                    trustAllHosts();
+                    URLConnection connection = url.openConnection();
+                    connection.connect();
+                    InputStream inputStream = connection.getInputStream();
+                    int fileSize = connection.getContentLength();
+                    if (fileSize <= 0) {
+                        throw new RuntimeException("无法获知文件大小");
                     }
+                    if (inputStream == null) {
+                        throw new  RuntimeException("stream is null");
+                    }
+
+                    FileOutputStream fileOutputStream = new FileOutputStream(destFile);
+                    byte[] buffer = new byte[1024];
+                    double downLoadFileSize = 0;
+                    do{
+                        //循环读取
+                        int numread = inputStream.read(buffer);
+                        if (numread == -1)
+                        {
+                            break;
+                        }
+                        fileOutputStream.write(buffer, 0, numread);
+                        downLoadFileSize += numread;
+                        // 更新进度条
+                        double progress = downLoadFileSize / fileSize * 100;
+                        DecimalFormat df = new DecimalFormat("#.00");
+                        String str = df.format(progress);
+                        String progressStr = str + "%";
+                        MainActivity.instance.changeDownloadProgress(progressStr);
+                    } while (true);
+
+                    inputStream.close();
+                    fileOutputStream.close();
+
+                    HotUpdate.downloadDone = true;
+                    HotUpdate.downSuccess = true;
+
+                    Log.d("--- HotUpdate ---", "下载成功");
                 }
             }
-        ).start();
+        } catch (IOException e){
+            HotUpdate.downloadDone = true;
+            HotUpdate.downSuccess = false;
+            e.printStackTrace();
+            Log.d("--- HotUpdate ---", "下载失败");
+        }
     }
 
     /**

@@ -32,45 +32,6 @@
 
     <!--<TextView
         android:background="@android:color/holo_orange_dark"
-        android:layout_margin="8.0dp"
-        android:padding="8.0dp"
-        android:textColor="@android:color/black"
-        android:id="@+id/open_native"
-        android:textAllCaps="false"
-        android:textSize="16sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/open_native" />
-
-    <TextView
-        android:background="@android:color/holo_orange_dark"
-        android:layout_margin="8.0dp"
-        android:padding="8.0dp"
-        android:textColor="@android:color/black"
-        android:id="@+id/open_flutter"
-        android:textAllCaps="false"
-        android:textSize="16sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/open_flutter" />
-
-    <TextView
-        android:background="@android:color/holo_orange_dark"
-        android:layout_marginLeft="8.0dp"
-        android:layout_marginTop="8.0dp"
-        android:layout_marginRight="8.0dp"
-        android:layout_marginBottom="80.0dp"
-        android:padding="8.0dp"
-        android:textColor="@android:color/black"
-        android:id="@+id/open_flutter_fragment"
-        android:textAllCaps="false"
-        android:textSize="16sp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/open_flutter_fragment" />-->
-
-    <TextView
-        android:background="@android:color/holo_orange_dark"
         android:layout_marginLeft="8.0dp"
         android:layout_marginTop="8.0dp"
         android:layout_marginRight="8.0dp"
@@ -97,7 +58,7 @@
         android:textSize="16sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="初始化引擎" />
+        android:text="初始化引擎" />-->
 
     <TextView
         android:background="@android:color/holo_orange_dark"
@@ -158,10 +119,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Flutter 业务版本号" />
-
-   <!-- <WebView
-        android:id="@+id/vr_webView_in_main"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>-->
 
 </LinearLayout>

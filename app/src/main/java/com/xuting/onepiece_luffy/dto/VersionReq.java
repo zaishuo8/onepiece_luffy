@@ -1,16 +1,16 @@
 package com.xuting.onepiece_luffy.dto;
 
 public class VersionReq {
-    private float deviceId;
+    private String deviceId;
     private float appId;
     private String nativeVersionNumber;
     private String hotUpdateVersionNumber;
 
-    public float getDeviceId() {
+    public String getDeviceId() {
         return deviceId;
     }
 
-    public void setDeviceId(float deviceId) {
+    public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
     }
 
@@ -38,7 +38,7 @@ public class VersionReq {
         this.hotUpdateVersionNumber = hotUpdateVersionNumber;
     }
 
-    public VersionReq(float deviceId, float appId, String nativeVersionNumber, String hotUpdateVersionNumber) {
+    public VersionReq(String deviceId, float appId, String nativeVersionNumber, String hotUpdateVersionNumber) {
         this.deviceId = deviceId;
         this.appId = appId;
         this.nativeVersionNumber = nativeVersionNumber;

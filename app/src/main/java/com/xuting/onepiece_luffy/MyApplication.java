@@ -25,10 +25,16 @@ import io.flutter.plugin.common.StandardMessageCodec;
 public class MyApplication extends Application {
 
     private HotUpdate hotUpdate;
+    private static Context context;
+
+    public static Context getContext() {
+        return context;
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        context = this;
 
         // 热更新工具初始化
         hotUpdate = new HotUpdate(getApplicationContext());
