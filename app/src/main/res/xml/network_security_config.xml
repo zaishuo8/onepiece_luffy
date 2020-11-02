@@ -4,5 +4,6 @@
         <domain includeSubdomains="true">image.qubuduo.cn</domain>
         <domain includeSubdomains="true">zaishuo8.github.io</domain>
         <domain includeSubdomains="true">crl3.digicert.com</domain>
+        <domain includeSubdomains="true">192.168.0.100:7001</domain>
     </domain-config>
 </network-security-config>

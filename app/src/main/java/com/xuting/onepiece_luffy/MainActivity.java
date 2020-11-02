@@ -1,8 +1,12 @@
 package com.xuting.onepiece_luffy;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,11 +17,21 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.gson.Gson;
 import com.idlefish.flutterboost.containers.BoostFlutterActivity;
+import com.xuting.onepiece_luffy.dto.VersionReq;
+import com.xuting.onepiece_luffy.dto.VersionRes;
 
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -30,6 +44,124 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView mOpenFlutterFragment;
 
     private TextView downloadProgress;
+
+    public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
+
+    OkHttpClient client = new OkHttpClient();
+
+    /**
+     * 发 post 请求
+     * */
+    String post(String url, String json) throws IOException {
+        RequestBody body = RequestBody.create(json, JSON);
+        Request request = new Request.Builder()
+                .url(url)
+                .post(body)
+                .build();
+        try (Response response = client.newCall(request).execute()) {
+            return response.body().string();
+        }
+    }
+
+    /**
+     * 获取原生版本号
+     */
+    public static String getNativeVersionNumber(Context context) {
+        String appVersionName = "";
+        try {
+            PackageInfo packageInfo = context.getApplicationContext()
+                    .getPackageManager()
+                    .getPackageInfo(context.getPackageName(), 0);
+            appVersionName = packageInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e("", e.getMessage());
+        }
+        return appVersionName;
+    }
+
+    /**
+     * 获取 flutter 版本号
+     * */
+    public static String getFlutterVersionNumber() {
+        return "1.0.0";
+    }
+
+    /**
+     * 检测更新
+     * */
+    public void checkUpdate() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    String nativeVersion = getNativeVersionNumber(MainActivity.this);
+                    String flutterVersion = getFlutterVersionNumber();
+                    VersionReq req = new VersionReq(
+                            123456, 1,
+                            nativeVersion, flutterVersion
+                    );
+                    Gson gson = new Gson();
+                    String resJson = post("http://192.168.0.100:7001/version/check", gson.toJson(req));
+                    VersionRes versionRes = gson.fromJson(resJson, VersionRes.class);
+                    if (versionRes.getType() == 0) {
+                        // 不需要更新
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(
+                                        MainActivity.this,
+                                        "已经是最新版本",
+                                        Toast.LENGTH_SHORT
+                                ).show();
+                            }
+                        });
+                        return;
+                    }
+                    if (versionRes.getType() == 1) {
+                        // 原生更新
+                        nativeUpdate(versionRes);
+                        return;
+                    }
+                    if (versionRes.getType() == 2) {
+                        // flutter 更新
+                        flutterUpdate(versionRes);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
+
+    /**
+     * 原生更新
+     * */
+    public void nativeUpdate(VersionRes versionRes) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("新原生版本：" + versionRes.getVersionNumber())
+                        .setMessage(versionRes.getDescription())
+                        .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                // 启动系统浏览器打开下载 apk 地址
+                                Uri uri = Uri.parse(versionRes.getApkUrl());
+                                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                                startActivity(intent);
+                            }
+                        })
+                        .setNegativeButton("否", null)
+                        .create().show();
+            }
+        });
+    }
+
+    /**
+     * flutter 更新
+     * */
+    public void flutterUpdate(VersionRes versionRes) {}
 
     public void changeDownloadProgress(String progress) {
         runOnUiThread(new Runnable() {
@@ -83,7 +215,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.hot_update).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+                checkUpdate();
+
+                /*AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setTitle("是否替换尝试 lib.so")
                         .setPositiveButton("是", new DialogInterface.OnClickListener() {
                             @Override
@@ -92,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             }
                         })
                         .setNegativeButton("否", null)
-                        .create().show();
+                        .create().show();*/
             }
         });
 
