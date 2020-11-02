@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -23,6 +24,15 @@ import java.io.IOException;
 public class Init {
 
     private static final String Tag = "InitInit";
+
+    private static void toast(String message) {
+        (new Handler(Looper.getMainLooper())).post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(MyApplication.getContext(), message, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 
     /**
      * 是否已经加载了 libapp.so
@@ -156,6 +166,7 @@ public class Init {
         try {
             String nativeVersion = getNativeVersionNumber();
             String flutterVersion = getFlutterVersionNumber();
+            toast("native 版本号：" + nativeVersion + "\n" + "flutter 版本号：" + flutterVersion);
             Log.d(Tag, "native 版本号：" + nativeVersion);
             Log.d(Tag, "flutter 版本号：" + flutterVersion);
             VersionReq req = new VersionReq(Http.deviceId, Http.appId, nativeVersion, flutterVersion);
@@ -165,6 +176,7 @@ public class Init {
             int type = versionRes.getType();
             if (type == 0) {
                 // 不需要更新
+                toast("已经是最新版本了");
                 Log.d(Tag, "已经是最新版本了");
                 initEngine();
             } else if (type == 1) {
