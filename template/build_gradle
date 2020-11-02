@@ -1,0 +1,66 @@
+apply plugin: 'com.android.application'
+
+// flutter module
+repositories {
+    maven {
+        url '../../onepiece_zoro/build/host/outputs/repo'
+    }
+    maven {
+        url 'https://storage.googleapis.com/download.flutter.io'
+    }
+}
+
+android {
+    signingConfigs {
+        defaultConfig {
+            storeFile file('../jks/luffy.keystore')
+            storePassword 'luffy@123'
+            keyAlias 'luffy'
+            keyPassword 'luffy@123'
+        }
+    }
+    compileSdkVersion 29
+
+    defaultConfig {
+        applicationId "com.xuting.onepiece_luffy"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        applicationIdSuffix 'com.xuting.onepiece_luffy'
+        signingConfig signingConfigs.defaultConfig
+    }
+
+    buildTypes {
+        profile {
+            initWith debug
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    // 第三方
+    implementation("com.squareup.okhttp3:okhttp:4.9.0")
+    implementation 'com.google.code.gson:gson:2.8.6'
+
+    // flutter module release
+    releaseImplementation 'com.xuting.onepiece_zoro:flutter_release:1.0'
+}
