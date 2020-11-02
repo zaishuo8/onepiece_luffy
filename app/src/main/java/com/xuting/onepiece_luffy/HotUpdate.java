@@ -49,7 +49,7 @@ class HotUpdate {
         }
     }
 
-    static void check() {
+    static void check(String newLibappSoUrl) {
         new Thread(
             new Runnable() {
                 @Override
@@ -69,7 +69,6 @@ class HotUpdate {
 
                             boolean res = destFile.createNewFile();
                             if (res) {
-                                String newLibappSoUrl = "https://zaishuo8.github.io/ssq/libapp_2.so";
                                 URL url = new URL(newLibappSoUrl);
                                 trustAllHosts();
                                 URLConnection connection = url.openConnection();
@@ -153,64 +152,6 @@ class HotUpdate {
             HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    class CheckDto {
-        private long id;
-        private String version;   // 版本号 "1.0.0" 格式
-        private boolean needTip;  // 是否需要提醒用户
-        private String tipMessage;  // 提醒文案
-        private boolean forceUpdate;  // 提醒用户更新的时候，能不能不更新
-
-        private String downUrl;  // 更新包下载地址
-
-        public long getId() {
-            return id;
-        }
-
-        public void setId(long id) {
-            this.id = id;
-        }
-
-        public String getVersion() {
-            return version;
-        }
-
-        public void setVersion(String version) {
-            this.version = version;
-        }
-
-        public boolean isNeedTip() {
-            return needTip;
-        }
-
-        public void setNeedTip(boolean needTip) {
-            this.needTip = needTip;
-        }
-
-        public String getTipMessage() {
-            return tipMessage;
-        }
-
-        public void setTipMessage(String tipMessage) {
-            this.tipMessage = tipMessage;
-        }
-
-        public boolean isForceUpdate() {
-            return forceUpdate;
-        }
-
-        public void setForceUpdate(boolean forceUpdate) {
-            this.forceUpdate = forceUpdate;
-        }
-
-        public String getDownUrl() {
-            return downUrl;
-        }
-
-        public void setDownUrl(String downUrl) {
-            this.downUrl = downUrl;
         }
     }
 }

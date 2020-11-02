@@ -95,6 +95,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void run() {
                 try {
                     String nativeVersion = getNativeVersionNumber(MainActivity.this);
+                    runOnUiThread(new Runnable() {
+                        @SuppressLint("SetTextI18n")
+                        @Override
+                        public void run() {
+                            ((TextView) findViewById(R.id.info)).setText("当前版本号：" + nativeVersion);
+                        }
+                    });
                     String flutterVersion = getFlutterVersionNumber();
                     VersionReq req = new VersionReq(
                             123456, 1,
@@ -141,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void run() {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("新原生版本：" + versionRes.getVersionNumber())
+                builder.setTitle("原生更新版本：" + versionRes.getVersionNumber())
                         .setMessage(versionRes.getDescription())
                         .setPositiveButton("是", new DialogInterface.OnClickListener() {
                             @Override
@@ -161,7 +168,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /**
      * flutter 更新
      * */
-    public void flutterUpdate(VersionRes versionRes) {}
+    public void flutterUpdate(VersionRes versionRes) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("Flutter 更新版本：" + versionRes.getVersionNumber())
+                        .setMessage(versionRes.getDescription())
+                        .setPositiveButton("是", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                HotUpdate.check(versionRes.getLibappsoArmeabiV7aUrl());
+                            }
+                        })
+                        .setNegativeButton("否", null)
+                        .create().show();
+    }
 
     public void changeDownloadProgress(String progress) {
         runOnUiThread(new Runnable() {
@@ -215,19 +234,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         findViewById(R.id.hot_update).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 checkUpdate();
-
-                /*AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("是否替换尝试 lib.so")
-                        .setPositiveButton("是", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                HotUpdate.check();
-                            }
-                        })
-                        .setNegativeButton("否", null)
-                        .create().show();*/
             }
         });
 
@@ -269,6 +276,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View view) {
                 String url = "flutter://fsp_watch_page";
+                Intent intent = BoostFlutterActivity.withNewEngine().url(url).params(new HashMap<>())
+                        .backgroundMode(BoostFlutterActivity.BackgroundMode.opaque)
+                        .build(MainActivity.this);
+                MainActivity.this.startActivityForResult(intent, 0);
+            }
+        });
+
+        // 打开 flutter 业务版本号页面
+        findViewById(R.id.open_flutter_version).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String url = "flutter://flutter_version_page";
                 Intent intent = BoostFlutterActivity.withNewEngine().url(url).params(new HashMap<>())
                         .backgroundMode(BoostFlutterActivity.BackgroundMode.opaque)
                         .build(MainActivity.this);

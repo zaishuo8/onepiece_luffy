@@ -7,14 +7,16 @@ public class VersionRes {
     private boolean forceUpdate;
     private String description;
     private boolean tipUser;
+    private String libappsoArmeabiV7aUrl;
 
-    public VersionRes(int type, String versionNumber, String apkUrl, boolean forceUpdate, String description, boolean tipUser) {
+    public VersionRes(int type, String versionNumber, String apkUrl, boolean forceUpdate, String description, boolean tipUser, String libappsoArmeabiV7aUrl) {
         this.type = type;
         this.versionNumber = versionNumber;
         this.apkUrl = apkUrl;
         this.forceUpdate = forceUpdate;
         this.description = description;
         this.tipUser = tipUser;
+        this.libappsoArmeabiV7aUrl = libappsoArmeabiV7aUrl;
     }
 
     public int getType() {
@@ -63,5 +65,14 @@ public class VersionRes {
 
     public void setTipUser(boolean tipUser) {
         this.tipUser = tipUser;
+    }
+
+
+    public String getLibappsoArmeabiV7aUrl() {
+        return libappsoArmeabiV7aUrl;
+    }
+
+    public void setLibappsoArmeabiV7aUrl(String libappsoArmeabiV7aUrl) {
+        this.libappsoArmeabiV7aUrl = libappsoArmeabiV7aUrl;
     }
 }
