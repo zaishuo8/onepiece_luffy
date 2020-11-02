@@ -8,8 +8,16 @@ public class VersionRes {
     private String description;
     private boolean tipUser;
     private String libappsoArmeabiV7aUrl;
+    private String libappsoArm64V8aUrl;
+    private String libappsoX8664Url;
 
-    public VersionRes(int type, String versionNumber, String apkUrl, boolean forceUpdate, String description, boolean tipUser, String libappsoArmeabiV7aUrl) {
+    public VersionRes(
+            int type, String versionNumber, String apkUrl, boolean forceUpdate, String description,
+            boolean tipUser,
+            String libappsoArmeabiV7aUrl,
+            String libappsoArm64V8aUrl,
+            String libappsoX8664Url
+    ) {
         this.type = type;
         this.versionNumber = versionNumber;
         this.apkUrl = apkUrl;
@@ -74,5 +82,21 @@ public class VersionRes {
 
     public void setLibappsoArmeabiV7aUrl(String libappsoArmeabiV7aUrl) {
         this.libappsoArmeabiV7aUrl = libappsoArmeabiV7aUrl;
+    }
+
+    public String getLibappsoArm64V8aUrl() {
+        return libappsoArm64V8aUrl;
+    }
+
+    public void setLibappsoArm64V8aUrl(String libappsoArm64V8aUrl) {
+        this.libappsoArm64V8aUrl = libappsoArm64V8aUrl;
+    }
+
+    public String getLibappsoX8664Url() {
+        return libappsoX8664Url;
+    }
+
+    public void setLibappsoX8664Url(String libappsoX8664Url) {
+        this.libappsoX8664Url = libappsoX8664Url;
     }
 }
