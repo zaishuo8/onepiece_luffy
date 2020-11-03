@@ -8,5 +8,6 @@
         <domain includeSubdomains="true">192.168.2.147:7001</domain>
         <domain includeSubdomains="true">192.168.2.147</domain>
         <domain includeSubdomains="true">onepiece-test.oss-cn-hangzhou.aliyuncs.com</domain>
+        <domain includeSubdomains="true">api.xiaoniuguo.com</domain>
     </domain-config>
 </network-security-config>
