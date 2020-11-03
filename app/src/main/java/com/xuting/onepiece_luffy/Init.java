@@ -144,8 +144,14 @@ public class Init {
                         .setPositiveButton("是", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                HotUpdate.check(versionRes.getLibappsoArmeabiV7aUrl());
-                                initEngine();
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        HotUpdate.check(versionRes.getLibappsoArm64V8aUrl());
+                                        setFlutterVersionNumber(versionRes.getVersionNumber());
+                                        initEngine();
+                                    }
+                                }).start();
                             }
                         })
                         .setNegativeButton("否", new DialogInterface.OnClickListener() {
@@ -203,7 +209,7 @@ public class Init {
             public void run() {
                 if (!isLoadFlutter()) {
                     VersionRes versionRes = getLatestFlutterVersion();
-                    HotUpdate.check(versionRes.getLibappsoArmeabiV7aUrl());
+                    HotUpdate.check(versionRes.getLibappsoArm64V8aUrl());
                     setFlutterVersionNumber(versionRes.getVersionNumber());
                 }
                 checkUpdate(context);

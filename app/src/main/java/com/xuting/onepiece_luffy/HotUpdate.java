@@ -65,9 +65,9 @@ class HotUpdate {
 
                 boolean res = destFile.createNewFile();
                 if (res) {
-                    // newLibappSoUrl = "https://zaishuo8.github.io/ssq/libapp_2.so";
                     // newLibappSoUrl = "https://onepiece-test.oss-cn-hangzhou.aliyuncs.com/libapp_2.so";
-                    newLibappSoUrl = "https://onepiece-test.oss-cn-hangzhou.aliyuncs.com/5e35b941-0b22-4148-a723-4b398a9a601a.so";
+                    // newLibappSoUrl = "https://onepiece-test.oss-cn-hangzhou.aliyuncs.com/5e35b941-0b22-4148-a723-4b398a9a601a.so";
+                    // newLibappSoUrl = "http://onepiece-test.oss-cn-hangzhou.aliyuncs.com/5b45c428-f777-4f85-9969-dd3e3af6573a.so";
                     URL url = new URL(newLibappSoUrl);
                     trustAllHosts();
                     URLConnection connection = url.openConnection();

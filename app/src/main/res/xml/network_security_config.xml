@@ -5,5 +5,8 @@
         <domain includeSubdomains="true">zaishuo8.github.io</domain>
         <domain includeSubdomains="true">crl3.digicert.com</domain>
         <domain includeSubdomains="true">192.168.0.100:7001</domain>
+        <domain includeSubdomains="true">192.168.2.147:7001</domain>
+        <domain includeSubdomains="true">192.168.2.147</domain>
+        <domain includeSubdomains="true">onepiece-test.oss-cn-hangzhou.aliyuncs.com</domain>
     </domain-config>
 </network-security-config>

@@ -13,7 +13,7 @@ public class Http {
     public static final String deviceId = "123456";
     public static final float appId = 1;
 
-    public static final String host = "http://192.168.0.100:7001";
+    public static final String host = "http://192.168.2.147:7001";
 
     public static final String latestFlutterVersionUrl = host + "/version/latest_flutter_version";
     public static final String checkUpdate = host + "/version/check";
